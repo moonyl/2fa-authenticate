@@ -1,2 +1,2 @@
-# create-typescript-found
-typescript를 이용해서 nodejs 개발하기 위한 기본적인 boilder plate를 만든다.
+# 2fa-authenticate
+2fa 인증을 위해 간단히 외부 프로그램 형태로 생성 및 검증 작업을 할 수 있도록 한다.

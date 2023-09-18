@@ -3,18 +3,39 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "dist/2fa-authenticate.js",
   "scripts": {
-    "start:dev": "npx nodemon",
-    "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/index.js"
+    "start:gen": "npx nodemon -- gen --name POSOD",
+    "start:verify": "npx nodemon -- verify 123456 --secret oflPRBeREhGFicFNOIRaGoooass9KWer",
+    "start:wrong": "npx nodemon -- ",
+    "start:helpGen": "npx nodemon -- help gen",
+    "start:helpVerify": "npx nodemon -- help verify",
+    "build": "rimraf ./dist && tsc",
+    "start": "npm run build && node dist/2fa-authenticate.js",
+    "pkg": "npx pkg ."
+  },
+  "pkg": {
+    "targets": [
+      "node18-win-x64",
+      "node18-linux-x64"
+    ],
+    "outputPath": "package"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^20.6.2",
+    "commander": "^11.0.0",
     "nodemon": "^3.0.1",
+    "qrcode": "^1.5.3",
+    "speakeasy": "^2.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.2",
+    "@types/qrcode": "^1.5.2",
+    "@types/speakeasy": "^2.0.7",
+    "pkg": "^5.8.1"
   }
 }
