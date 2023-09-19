@@ -14,7 +14,7 @@ class Auth2fa {
             .option('-n,--name <name>', 'authenticator에 표시될 이름')
             .option('-a,--algo <algorithm>', "생성시 적용할 알고리즘.", "sha256")
             .option('-w,--width <width>', "QR code 너비")
-            .option('-p,--period <period>', "TOTP의 유효한 기간(초)", "60")
+            .option('-p,--period <period>', "TOTP의 유효 기간(초)", "60")
             .action(onAuthGen);
 
         this.program
