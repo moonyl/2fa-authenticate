@@ -1,6 +1,6 @@
 {
   "name": "2fa-authenticate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "bin": "dist/2fa-authenticate.js",

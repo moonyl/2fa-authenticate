@@ -3,7 +3,8 @@ import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
 
 const onAuthGen: CommandHandler = (options) => {
-    const { name: label, algorithm, period, width } = options;
+    const { name: label, algo, period, width } = options;
+    // console.log({ algo });
 
     let periodNum = parseInt(period, 10) ?? 60;
     periodNum = isNaN(periodNum) ? 60 : periodNum;
@@ -14,7 +15,7 @@ const onAuthGen: CommandHandler = (options) => {
 
     const secret = speakeasy.generateSecretASCII();
     // console.log({ secret })
-    const otpauthUrl = speakeasy.otpauthURL({ secret, label, algorithm, period: periodNum })
+    const otpauthUrl = speakeasy.otpauthURL({ secret, label, algorithm: algo, period: periodNum })
 
     let qrOptions = widthNum ? { width: widthNum } : {}
     qrcode.toDataURL(otpauthUrl as string, qrOptions, (err, data) => {
