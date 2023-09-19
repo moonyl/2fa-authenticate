@@ -22,6 +22,7 @@ class Auth2fa {
             .description('토큰을 검증합니다.')
             .option('-s,--secret <secretKey>', '검증을 위한 비밀키')
             .option('-W,--window <window>', "verify 허용 시간 범위(30초 단위), 기본값: 1(60초)", "1")
+            .option('-a,--algo <algorithm>', "검증시 적용할 알고리즘.", "sha256")
             .action(onVerify);
 
         this.program.parse(process.argv);

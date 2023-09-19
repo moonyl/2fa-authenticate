@@ -28,7 +28,7 @@ const onAuthGen: CommandHandler = (options) => {
 }
 
 const onVerify: CommandHandler = (token, options) => {
-    const { secret, window } = options;
+    const { secret, window, algo } = options;
     let windowNum = parseInt(window, 10) ?? 1;
     windowNum = isNaN(windowNum) ? 1 : windowNum;
     // console.log({ windowNum })
@@ -37,6 +37,7 @@ const onVerify: CommandHandler = (token, options) => {
         secret,
         encoding: 'ascii',
         token,
+        algorithm: algo,
         window: windowNum,
     });
     console.log(JSON.stringify({ verified }));
