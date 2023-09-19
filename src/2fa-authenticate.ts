@@ -3,13 +3,21 @@ import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
 
 const onAuthGen: CommandHandler = (options) => {
-    const { name: label, algorithm } = options;
+    const { name: label, algorithm, period, width } = options;
+
+    let periodNum = parseInt(period, 10) ?? 60;
+    periodNum = isNaN(periodNum) ? 60 : periodNum;
+
+    let widthNum = parseInt(width, 10) ?? 0;
+    widthNum = isNaN(widthNum) ? 0 : widthNum;
+    // console.log({ periodNum, widthNum });
 
     const secret = speakeasy.generateSecretASCII();
     // console.log({ secret })
-    const otpauthUrl = speakeasy.otpauthURL({ secret, label, algorithm })
+    const otpauthUrl = speakeasy.otpauthURL({ secret, label, algorithm, period: periodNum })
 
-    qrcode.toDataURL(otpauthUrl as string, (err, data) => {
+    let qrOptions = widthNum ? { width: widthNum } : {}
+    qrcode.toDataURL(otpauthUrl as string, qrOptions, (err, data) => {
         if (err) {
             console.error(err);
         }
@@ -19,12 +27,16 @@ const onAuthGen: CommandHandler = (options) => {
 }
 
 const onVerify: CommandHandler = (token, options) => {
-    const { secret, algorithm } = options;
+    const { secret, window } = options;
+    let windowNum = parseInt(window, 10) ?? 1;
+    windowNum = isNaN(windowNum) ? 1 : windowNum;
+    // console.log({ windowNum })
 
     const verified = speakeasy.totp.verify({
         secret,
         encoding: 'ascii',
         token,
+        window: windowNum,
     });
     console.log(JSON.stringify({ verified }));
     // console.log(`verify = ${verified}, ${token}, ${options.secret}`);

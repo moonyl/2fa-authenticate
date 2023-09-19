@@ -1,6 +1,6 @@
 {
   "name": "2fa-authenticate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "bin": "dist/2fa-authenticate.js",
@@ -12,7 +12,7 @@
     "start:helpVerify": "npx nodemon -- help verify",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/2fa-authenticate.js",
-    "pkg": "npx pkg ."
+    "pkg": "npm run build && npx pkg ."
   },
   "pkg": {
     "targets": [
