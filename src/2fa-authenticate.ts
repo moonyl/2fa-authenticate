@@ -3,19 +3,16 @@ import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
 
 const onAuthGen: CommandHandler = (options) => {
-    const { name: label, algo, period, width } = options;
-    // console.log({ algo });
-
-    let periodNum = parseInt(period, 10) ?? 60;
-    periodNum = isNaN(periodNum) ? 60 : periodNum;
+    const { name, width } = options;
 
     let widthNum = parseInt(width, 10) ?? 0;
     widthNum = isNaN(widthNum) ? 0 : widthNum;
-    // console.log({ periodNum, widthNum });
 
-    const secret = speakeasy.generateSecretASCII();
-    // console.log({ secret })
-    const otpauthUrl = speakeasy.otpauthURL({ secret, label, algorithm: algo, period: periodNum })
+    const secret = speakeasy.generateSecret({
+        name
+    })
+
+    const { ascii, otpauth_url: otpauthUrl } = secret;
 
     let qrOptions = widthNum ? { width: widthNum } : {}
     qrcode.toDataURL(otpauthUrl as string, qrOptions, (err, data) => {
@@ -23,12 +20,12 @@ const onAuthGen: CommandHandler = (options) => {
             console.error(err);
         }
         // console.log(data);
-        console.log(JSON.stringify({ secret, qrcode: data }));
+        console.log(JSON.stringify({ secret: ascii, qrcode: data }));
     })
 }
 
 const onVerify: CommandHandler = (token, options) => {
-    const { secret, window, algo } = options;
+    const { secret, window } = options;
     let windowNum = parseInt(window, 10) ?? 1;
     windowNum = isNaN(windowNum) ? 1 : windowNum;
     // console.log({ windowNum })
@@ -37,7 +34,6 @@ const onVerify: CommandHandler = (token, options) => {
         secret,
         encoding: 'ascii',
         token,
-        algorithm: algo,
         window: windowNum,
     });
     console.log(JSON.stringify({ verified }));
