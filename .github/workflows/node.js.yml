@@ -25,6 +25,7 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm run pkg
+    - run: ls && ls pacakage
 
     - name : Create Release 
       id : create_release 
