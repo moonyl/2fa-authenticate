@@ -33,7 +33,7 @@ const onVerify: CommandHandler = (token, options) => {
 
 const onQrcode: CommandHandler = (secret: string, options) => {
     const { width, name } = options;
-    console.log({ width, name });
+    // console.log({ width, name });
     const otpauthUrl = `otpauth://totp/${name}?secret=${secret}`;
 
     let widthNum = parseInt(width, 10) ?? 0;
