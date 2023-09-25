@@ -1,27 +1,18 @@
-import Auth2fa, { CommandHandler } from "./Auth2fa";
+import { CommandHandler } from "./Auth2fa";
 import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
+import Auth2faBuilder from "./Auth2faBuilder";
 
 const onAuthGen: CommandHandler = (options) => {
-    const { name, width } = options;
+    // const { name } = options;
 
-    let widthNum = parseInt(width, 10) ?? 0;
-    widthNum = isNaN(widthNum) ? 0 : widthNum;
+    const secret = speakeasy.generateSecret()
 
-    const secret = speakeasy.generateSecret({
-        name
-    })
-
-    const { ascii, otpauth_url: otpauthUrl } = secret;
-
-    let qrOptions = widthNum ? { width: widthNum } : {}
-    qrcode.toDataURL(otpauthUrl as string, qrOptions, (err, data) => {
-        if (err) {
-            console.error(err);
-        }
-        // console.log(data);
-        console.log(JSON.stringify({ secret: ascii, qrcode: data }));
-    })
+    // console.log({ secret });
+    const { base32 } = secret;
+    // const url = speakeasy.otpauthURL({ secret: base32, label: name, encoding: 'base32' });
+    // console.log("compare: ", { otpauth_url, url });
+    console.log(JSON.stringify({ secret: base32 }));
 }
 
 const onVerify: CommandHandler = (token, options) => {
@@ -32,7 +23,7 @@ const onVerify: CommandHandler = (token, options) => {
 
     const verified = speakeasy.totp.verify({
         secret,
-        encoding: 'ascii',
+        encoding: 'base32',
         token,
         window: windowNum,
     });
@@ -40,4 +31,27 @@ const onVerify: CommandHandler = (token, options) => {
     // console.log(`verify = ${verified}, ${token}, ${options.secret}`);
 }
 
-new Auth2fa(onAuthGen, onVerify);
+const onQrcode: CommandHandler = (secret: string, options) => {
+    const { width, name } = options;
+    console.log({ width, name });
+    const otpauthUrl = `otpauth://totp/${name}?secret=${secret}`;
+
+    let widthNum = parseInt(width, 10) ?? 0;
+    widthNum = isNaN(widthNum) ? 0 : widthNum;
+
+    let qrOptions = widthNum ? { width: widthNum } : {}
+    qrcode.toDataURL(otpauthUrl, qrOptions, (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        // console.log(data);
+        console.log(JSON.stringify({ qrcode: data }));
+    })
+}
+
+new Auth2faBuilder()
+    .setOnAuthGen(onAuthGen)
+    .setOnVerify(onVerify)
+    .setOnQrcode(onQrcode)
+    .build();
+
