@@ -37,6 +37,7 @@
     "@types/node": "^20.6.2",
     "@types/qrcode": "^1.5.2",
     "@types/speakeasy": "^2.0.7",
-    "pkg": "^5.8.1"
+    "pkg": "^5.8.1",
+    "rimraf": "^5.0.1"
   }
 }
