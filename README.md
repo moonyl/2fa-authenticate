@@ -31,3 +31,17 @@ QR code 생성
 ```
 2fa-authenticate-win.exe verify 123456 --secret [secret key]
 ```
+
+## 개발용 명령
+
+`.env.example`을 `.env`로 복사한 뒤 `TOTP_SECRET`에 Authenticator의 Base32 secret을 설정한다. `.env`는 Git에서 제외된다.
+
+QR code 생성:
+```bash
+npm run start:qrcode
+```
+
+현재 OTP 검증:
+```bash
+npm run start:verify -- 123456
+```

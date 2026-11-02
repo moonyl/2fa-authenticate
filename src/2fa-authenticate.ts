@@ -16,7 +16,14 @@ const onAuthGen: CommandHandler = (options) => {
 }
 
 const onVerify: CommandHandler = (token, options) => {
-    const { secret, window } = options;
+    const secret = options.secret ?? process.env.TOTP_SECRET;
+    const { window } = options;
+    if (!secret) {
+        console.error("Provide --secret or set TOTP_SECRET in .env");
+        process.exitCode = 1;
+        return;
+    }
+
     let windowNum = parseInt(window, 10) ?? 1;
     windowNum = isNaN(windowNum) ? 1 : windowNum;
     // console.log({ windowNum })
@@ -33,8 +40,15 @@ const onVerify: CommandHandler = (token, options) => {
 
 const onQrcode: CommandHandler = (secret: string, options) => {
     const { width, name } = options;
+    const secretValue = secret ?? process.env.TOTP_SECRET;
+    if (!secretValue) {
+        console.error("Provide a secret or set TOTP_SECRET in .env");
+        process.exitCode = 1;
+        return;
+    }
+
     // console.log({ width, name });
-    const otpauthUrl = `otpauth://totp/${name}?secret=${secret}`;
+    const otpauthUrl = `otpauth://totp/${name}?secret=${secretValue}`;
 
     let widthNum = parseInt(width, 10) ?? 0;
     widthNum = isNaN(widthNum) ? 0 : widthNum;
@@ -54,4 +68,3 @@ new Auth2faBuilder()
     .setOnVerify(onVerify)
     .setOnQrcode(onQrcode)
     .build();
-

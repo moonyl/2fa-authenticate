@@ -6,8 +6,8 @@
   "bin": "dist/2fa-authenticate.js",
   "scripts": {
     "start:gen": "npx nodemon -- gen",
-    "start:verify": "npx nodemon -- verify 363168 --secret KZXWKPDYHY4VW63ZMESVIMDJM5WTS5LYGVGGSNTZIFCDAUSDLY4A",
-    "start:qrcode": "npx nodemon -- qrcode KZXWKPDYHY4VW63ZMESVIMDJM5WTS5LYGVGGSNTZIFCDAUSDLY4A --name POSOD",
+    "start:verify": "npx nodemon -- verify",
+    "start:qrcode": "npx nodemon -- qrcode --name POSOD",
     "start:wrong": "npx nodemon -- ",
     "start:helpGen": "npx nodemon -- help gen",
     "start:helpVerify": "npx nodemon -- help verify",
