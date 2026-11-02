@@ -34,7 +34,7 @@ QR code 생성
 
 ## 개발용 명령
 
-`.env.example`을 `.env`로 복사한 뒤 `TOTP_SECRET`에 Authenticator의 Base32 secret을 설정한다. `.env`는 Git에서 제외된다.
+`.env.example`을 `.env`로 복사한 뒤 `TOTP_SECRET`에 Authenticator의 Base32 secret을 설정한다. `.env`는 Git에서 제외된다. 개발 명령은 프로젝트 폴더의 `.env`를 사용하고, 패키징한 실행 파일은 실행 파일과 같은 폴더의 `.env`를 사용한다. 외부 실행 시 `qrcode`는 기존 호환성을 위해 첫 번째 positional 인자로 secret을 받고, `verify`는 `--secret` 옵션을 사용한다.
 
 QR code 생성:
 ```bash

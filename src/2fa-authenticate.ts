@@ -1,7 +1,15 @@
 import { CommandHandler } from "./Auth2fa";
+import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import speakeasy from 'speakeasy';
 import qrcode from 'qrcode';
 import Auth2faBuilder from "./Auth2faBuilder";
+
+const envDirectory = Reflect.has(process, 'pkg') ? dirname(process.execPath) : process.cwd();
+const envPath = join(envDirectory, '.env');
+if (existsSync(envPath)) {
+    process.loadEnvFile(envPath);
+}
 
 const onAuthGen: CommandHandler = (options) => {
     // const { name } = options;
